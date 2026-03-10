@@ -1,4 +1,4 @@
-const CACHE_NAME = "ningsmile-cache-v1";
+const CACHE_NAME = "ningsmile-cache-v2";
 
 const urlsToCache = [
   "./",
