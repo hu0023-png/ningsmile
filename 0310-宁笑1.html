@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#c7ad7f" />
+  <link rel="manifest" href="manifest.json" />
+  <title>宁笑 NingSmile</title>
+  <style>
+    :root {
+      --bg: #f7f5f1;
+      --card: #fcfbf8;
+      --text: #2c2926;
+      --muted: #8c8377;
+      --line: #dcc8a0;
+      --button: #b8b4b0;
+      --button-active: #9f968b;
+      --soft: #f3efe8;
+      --accent: #c7ad7f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #e9e7e2 0%, var(--bg) 18%);
+      color: var(--text);
+      font-family: "PingFang SC", "Noto Serif SC", "Source Han Serif SC", "Hiragino Sans GB", serif;
+      min-height: 100vh;
+      padding: 18px;
+    }
+
+    .phone {
+      max-width: 860px;
+      margin: 0 auto;
+      background: var(--card);
+      border-radius: 34px;
+      padding: 28px 22px 52px;
+      box-shadow: 0 6px 30px rgba(0, 0, 0, 0.04);
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 36px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .circle-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: none;
+      background: #f3f2ef;
+      color: #595550;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .app-title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(42px, 8vw, 64px);
+      font-weight: 400;
+      letter-spacing: 0.12em;
+    }
+
+    .hero .cn {
+      margin-top: 10px;
+      color: #d0af6d;
+      font-size: 24px;
+      letter-spacing: 0.42em;
+      padding-left: 0.42em;
+    }
+
+    .hero-note {
+      max-width: 620px;
+      margin: 22px auto 0;
+      color: #7c7267;
+      font-size: 16px;
+      line-height: 1.9;
+    }
+
+    .gold-line {
+      width: 72px;
+      height: 1px;
+      margin: 26px auto 0;
+      background: var(--line);
+    }
+
+    .langs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      justify-items: center;
+      align-items: center;
+      margin: 34px auto 34px;
+      max-width: 520px;
+      color: #5f584f;
+      font-size: 20px;
+    }
+
+    .lang-btn {
+      position: relative;
+      background: transparent;
+      border: none;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .lang-btn.active { color: var(--text); }
+
+    .lang-btn.active::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -10px;
+      width: 42px;
+      height: 2px;
+      background: var(--line);
+    }
+
+    .profile-card,
+    .prompt-card,
+    .submission-card,
+    .feed-card {
+      background: #fffdfa;
+      border: 1px solid #eee7dc;
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      color: #6d6255;
+      letter-spacing: 0.08em;
+      margin-bottom: 14px;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 94px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .avatar-wrap {
+      text-align: center;
+    }
+
+    .avatar {
+      width: 94px;
+      height: 94px;
+      border-radius: 50%;
+      border: 2px solid #eadcc2;
+      object-fit: cover;
+      background: #f3efe8;
+      display: block;
+      margin: 0 auto 10px;
+    }
+
+    .small-btn,
+    .submit,
+    .secondary-btn {
+      border: none;
+      cursor: pointer;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 16px;
+    }
+
+    .small-btn,
+    .secondary-btn {
+      background: #efe9df;
+      color: #5f5548;
+    }
+
+    .submit {
+      background: var(--button);
+      color: white;
+      font-size: 20px;
+      padding: 18px 26px;
+      transition: background 0.2s ease;
+    }
+
+    .submit:hover { background: var(--button-active); }
+
+    .field-group {
+      margin-bottom: 14px;
+    }
+
+    .field-label {
+      display: block;
+      margin-bottom: 6px;
+      color: #7d7266;
+      font-size: 14px;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      background: #fffdfa;
+      padding: 14px 16px;
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.7;
+      outline: none;
+      font-family: inherit;
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .readonly-field {
+      background: #f7f3ec;
+      color: #6e6559;
+    }
+
+    .help-text {
+      color: #8a7f72;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .prompt-main {
+      font-size: 28px;
+      line-height: 1.5;
+      margin: 0 0 12px;
+      font-weight: 400;
+    }
+
+    .prompt-desc {
+      color: #7e7367;
+      font-size: 15px;
+      line-height: 1.9;
+    }
+
+    .photo-preview {
+      margin-top: 12px;
+      max-width: 180px;
+      border-radius: 16px;
+      display: none;
+      border: 1px solid #eadcc2;
+    }
+
+    .counter {
+      text-align: right;
+      margin-top: 10px;
+      color: #7f7468;
+      font-size: 14px;
+    }
+
+    .action-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #625a50;
+      font-size: 18px;
+    }
+
+    .feed-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .feed-title {
+      font-size: 28px;
+      margin: 0;
+      font-weight: 400;
+    }
+
+    .feed-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .voice-card {
+      background: #fffdfa;
+      border: 1px solid #eee7dc;
+      border-left: 3px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .voice-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .voice-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid #eadcc2;
+      background: #f1ece3;
+    }
+
+    .voice-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #4c453d;
+    }
+
+    .voice-time {
+      color: #8c8276;
+      font-size: 13px;
+      margin-top: 2px;
+    }
+
+    .voice-prompt {
+      color: #b79252;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .voice-text {
+      font-size: 17px;
+      color: #4b443c;
+      line-height: 1.9;
+    }
+
+    .voice-photo {
+      margin-top: 12px;
+      width: 100%;
+      max-width: 220px;
+      border-radius: 16px;
+      border: 1px solid #eadcc2;
+    }
+
+    .muted-empty {
+      color: #8b8174;
+      text-align: center;
+      padding: 24px 10px;
+      line-height: 1.9;
+    }
+
+    @media (max-width: 720px) {
+      body { padding: 10px; }
+      .phone { padding: 20px 14px 42px; border-radius: 24px; }
+      .langs { font-size: 18px; gap: 14px; }
+      .profile-grid { grid-template-columns: 1fr; }
+      .avatar-wrap { text-align: left; }
+      .avatar { margin-left: 0; }
+      .prompt-main { font-size: 24px; }
+      .feed-title { font-size: 24px; }
+      .submit { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="phone">
+    <div class="topbar">
+      <button class="circle-btn" type="button" id="randomPromptBtn" title="换一题">↻</button>
+      <div class="app-title">宁笑 NingSmile</div>
+      <button class="circle-btn" type="button" id="scrollFeedBtn" title="查看留言">☺</button>
+    </div>
+
+    <section class="hero">
+      <h1 id="heroTitle">NingSmile</h1>
+      <div class="cn" id="heroSubtitle">宁 笑</div>
+      <div class="gold-line"></div>
+      <div class="hero-note" id="heroNote">通过真实、自省、善意与微笑，把愿意悔改的人慢慢连接起来。</div>
+
+      <div class="langs" id="languageTabs">
+        <button class="lang-btn active" data-lang="zh">中文</button>
+        <button class="lang-btn" data-lang="en">English</button>
+        <button class="lang-btn" data-lang="ja">日本語</button>
+        <button class="lang-btn" data-lang="ko">한국어</button>
+      </div>
+    </section>
+
+    <section class="profile-card">
+      <div class="section-title" id="profileTitle">我的标记</div>
+      <div class="profile-grid">
+        <div class="avatar-wrap">
+          <img id="avatarPreview" class="avatar" alt="avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><rect width='120' height='120' fill='%23f1ece3'/><text x='60' y='68' font-size='42' text-anchor='middle' fill='%23b89f72'>☺</text></svg>" />
+          <input id="avatarInput" type="file" accept="image/*" hidden />
+          <button class="small-btn" type="button" id="avatarBtn">修改头像</button>
+        </div>
+        <div>
+          <div class="field-group">
+            <label class="field-label" id="systemNameLabel" for="systemName">系统唯一名</label>
+            <input class="readonly-field" id="systemName" type="text" readonly />
+          </div>
+          <div class="field-group">
+            <label class="field-label" id="customNameLabel" for="customName">自定义名称</label>
+            <input id="customName" type="text" maxlength="24" placeholder="例如：青岛微笑者" />
+          </div>
+          <div class="help-text" id="nameHelp">显示方式：系统唯一名 + 自定义名称。你以后可以继续修改名字和头像。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="prompt-card">
+      <div class="section-title" id="promptTitle">今日自省</div>
+      <h2 class="prompt-main" id="promptMain"></h2>
+      <div class="prompt-desc" id="promptDesc"></div>
+      <div class="action-row">
+        <button class="secondary-btn" type="button" id="newPromptBtn">换一个题目</button>
+      </div>
+    </section>
+
+    <section class="submission-card">
+      <div class="section-title" id="submissionTitle">留下今日宁笑</div>
+      <div class="field-group">
+        <label class="field-label" id="messageLabel" for="entry">留言（必填）</label>
+        <textarea id="entry" maxlength="280" placeholder="写下一句真实的话…"></textarea>
+        <div class="counter"><span id="count">0</span> / 280</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" id="photoLabel" for="photoInput">微笑照片（可选）</label>
+        <input id="photoInput" type="file" accept="image/*" hidden />
+        <button class="secondary-btn" type="button" id="photoBtn">上传微笑照片</button>
+        <img id="photoPreview" class="photo-preview" alt="preview" />
+      </div>
+
+      <div class="action-row">
+        <label class="toggle">
+          <input type="checkbox" id="smileCheck" checked />
+          <span id="smileToggle">🙂 我愿意用微笑面对他人</span>
+        </label>
+        <button class="submit" id="saveBtn" type="button">留下宁笑</button>
+      </div>
+    </section>
+
+    <section class="feed-card" id="feedSection">
+      <div class="feed-head">
+        <h3 class="feed-title" id="feedTitle">宁笑群体</h3>
+        <button class="secondary-btn" type="button" id="clearDemoBtn">清除示例</button>
+      </div>
+      <div id="feedList" class="feed-list"></div>
+    </section>
+  </main>
+
+  <script>
+    const uiText = {
+      zh: {
+        heroTitle: 'NingSmile',
+        heroSubtitle: '宁 笑',
+        heroNote: '通过真实、自省、善意与微笑，把愿意悔改的人慢慢连接起来。',
+        profileTitle: '我的标记',
+        systemNameLabel: '系统唯一名',
+        customNameLabel: '自定义名称',
+        customPlaceholder: '例如：青岛微笑者',
+        nameHelp: '显示方式：系统唯一名 + 自定义名称。你以后可以继续修改名字和头像。',
+        avatarBtn: '修改头像',
+        promptTitle: '今日自省',
+        promptDescPrefix: '解释：',
+        newPromptBtn: '换一个题目',
+        submissionTitle: '留下今日宁笑',
+        messageLabel: '留言（必填）',
+        messagePlaceholder: '写下一句真实的话…',
+        photoLabel: '微笑照片（可选）',
+        photoBtn: '上传微笑照片',
+        smileToggle: '🙂 我愿意用微笑面对他人',
+        saveBtn: '留下宁笑',
+        feedTitle: '宁笑群体',
+        clearDemoBtn: '清除示例',
+        emptyMessage: '请先写下今天的真实留言。',
+        installFail: '离线安装相关文件尚未完整准备好，但网页内容可以正常使用。',
+        emptyFeed: '这里会慢慢聚集愿意自省、悔改、并用微笑面对他人的人。',
+        timeJustNow: '刚刚'
+      },
+      en: {
+        heroTitle: 'NingSmile',
+        heroSubtitle: 'Ning Smile',
+        heroNote: 'Use truth, reflection, kindness, and a smile to connect people who are willing to repent and grow.',
+        profileTitle: 'My Identity',
+        systemNameLabel: 'System Unique Name',
+        customNameLabel: 'Custom Name',
+        customPlaceholder: 'For example: Quiet Smiler',
+        nameHelp: 'Display format: system unique name + custom name. You can update your name and avatar later.',
+        avatarBtn: 'Change Avatar',
+        promptTitle: 'Today’s Reflection',
+        promptDescPrefix: 'Note: ',
+        newPromptBtn: 'New Prompt',
+        submissionTitle: 'Leave Today’s NingSmile',
+        messageLabel: 'Message (required)',
+        messagePlaceholder: 'Write one honest sentence…',
+        photoLabel: 'Smile Photo (optional)',
+        photoBtn: 'Upload Smile Photo',
+        smileToggle: '🙂 I want to face others with a smile',
+        saveBtn: 'Post NingSmile',
+        feedTitle: 'NingSmile Community',
+        clearDemoBtn: 'Clear Demo',
+        emptyMessage: 'Please write your honest message first.',
+        installFail: 'PWA offline files are not fully ready yet, but the page itself works normally.',
+        emptyFeed: 'People willing to reflect, repent, and smile at others will slowly gather here.',
+        timeJustNow: 'just now'
+      },
+      ja: {
+        heroTitle: 'NingSmile',
+        heroSubtitle: '寧笑',
+        heroNote: '真実、自省、善意、そして微笑みによって、悔い改めようとする人々を少しずつ結びつけます。',
+        profileTitle: 'わたしのしるし',
+        systemNameLabel: 'システム固有名',
+        customNameLabel: 'カスタム名',
+        customPlaceholder: '例：静かなほほえみ',
+        nameHelp: '表示形式：システム固有名 + カスタム名。名前とアバターは後で変更できます。',
+        avatarBtn: 'アバター変更',
+        promptTitle: '今日の省み',
+        promptDescPrefix: '説明：',
+        newPromptBtn: '別の問い',
+        submissionTitle: '今日の寧笑を残す',
+        messageLabel: 'メッセージ（必須）',
+        messagePlaceholder: '正直なひと言を書いてください…',
+        photoLabel: '微笑みの写真（任意）',
+        photoBtn: '写真をアップロード',
+        smileToggle: '🙂 人に微笑みで向き合いたい',
+        saveBtn: '寧笑を残す',
+        feedTitle: '寧笑のつながり',
+        clearDemoBtn: 'サンプル削除',
+        emptyMessage: 'まず今日の正直な言葉を書いてください。',
+        installFail: 'PWAのオフライン用ファイルはまだ完全ではありませんが、ページは通常どおり使えます。',
+        emptyFeed: '自省し、悔い改め、微笑みで人に向き合おうとする人がここに集まっていきます。',
+        timeJustNow: 'たった今'
+      },
+      ko: {
+        heroTitle: 'NingSmile',
+        heroSubtitle: '닝스마일',
+        heroNote: '진실, 성찰, 친절, 그리고 미소를 통해 회개하며 성장하려는 사람들을 조금씩 연결합니다.',
+        profileTitle: '나의 표시',
+        systemNameLabel: '시스템 고유 이름',
+        customNameLabel: '사용자 이름',
+        customPlaceholder: '예: 조용한 미소',
+        nameHelp: '표시 형식: 시스템 고유 이름 + 사용자 이름. 이름과 아바타는 나중에도 바꿀 수 있습니다.',
+        avatarBtn: '아바타 변경',
+        promptTitle: '오늘의 성찰',
+        promptDescPrefix: '설명: ',
+        newPromptBtn: '다른 질문',
+        submissionTitle: '오늘의 닝스마일 남기기',
+        messageLabel: '메시지 (필수)',
+        messagePlaceholder: '진실한 한 문장을 적어보세요…',
+        photoLabel: '미소 사진 (선택)',
+        photoBtn: '미소 사진 업로드',
+        smileToggle: '🙂 사람들을 미소로 대하고 싶어요',
+        saveBtn: '닝스마일 남기기',
+        feedTitle: '닝스마일 공동체',
+        clearDemoBtn: '예시 지우기',
+        emptyMessage: '먼저 오늘의 진실한 메시지를 적어주세요.',
+        installFail: 'PWA 오프라인 파일은 아직 완전히 준비되지 않았지만, 페이지 자체는 정상적으로 사용할 수 있습니다.',
+        emptyFeed: '성찰하고 회개하며 미소로 사람을 대하려는 이들이 이곳에 천천히 모일 것입니다.',
+        timeJustNow: '방금'
+      }
+    };
+
+    const prompts = {
+      zh: [
+        {
+          title: '今天，你在哪一种情绪里看见了自己？',
+          desc: '比如省察了自己的情绪、急躁、委屈、骄傲，或错误的做法之后，心里释然而发出的微笑。'
+        },
+        {
+          title: '今天，你向谁收回了责怪，转向了理解？',
+          desc: '试着想想：原来你也有自己的盲点，当你愿意承认这一点时，那一丝轻松就是宁笑。'
+        },
+        {
+          title: '今天，你纠正了自己哪一个不真实的念头？',
+          desc: '也许是停止自欺，也许是不再说谎。自省之后还能温柔地面对生活，就是宁笑。'
+        },
+        {
+          title: '今天，你愿意怎样用善意面对一个并不容易相处的人？',
+          desc: '宁笑不是纵容，而是在不违背良心的前提下，仍然愿意以平和和善意回应他人。'
+        }
+      ],
+      en: [
+        {
+          title: 'Which emotion helped you see yourself more clearly today?',
+          desc: 'For example, after noticing your impatience, pride, hurt, or a wrong response, a smile of relief quietly appeared.'
+        },
+        {
+          title: 'Whom did you stop blaming and begin to understand today?',
+          desc: 'When you admit your own blind spot, that small release in your heart can become a NingSmile.'
+        },
+        {
+          title: 'What untrue thought did you correct in yourself today?',
+          desc: 'Maybe you stopped deceiving yourself, or chose not to lie. Reflection followed by gentleness is NingSmile.'
+        },
+        {
+          title: 'How can you face a difficult person with kindness today?',
+          desc: 'NingSmile is not indulgence. It means keeping your conscience clear while still responding with peace and goodwill.'
+        }
+      ],
+      ja: [
+        {
+          title: '今日は、どんな感情の中で自分を見つめましたか。',
+          desc: 'たとえば焦り、傷つき、誇り、高ぶり、誤った行いに気づいたあと、心がほどけて浮かぶ微笑みです。'
+        },
+        {
+          title: '今日は、誰への責めを手放し、理解へ向かいましたか。',
+          desc: '自分にも盲点があると認めたとき、心に少しの軽さが生まれます。それが寧笑です。'
+        },
+        {
+          title: '今日は、自分のどんな不真実を正しましたか。',
+          desc: '自分をごまかすのをやめること、あるいは嘘をつかないと決めること。その後の静かな微笑みが寧笑です。'
+        },
+        {
+          title: '今日は、難しい相手にどう善意で向き合いますか。',
+          desc: '寧笑は甘やかしではなく、良心を裏切らずに平和と善意で人に向き合うことです。'
+        }
+      ],
+      ko: [
+        {
+          title: '오늘 어떤 감정 속에서 자신을 더 분명히 보았나요?',
+          desc: '조급함, 상처, 교만, 잘못된 반응을 돌아본 뒤 마음이 풀리며 떠오르는 미소를 떠올려 보세요.'
+        },
+        {
+          title: '오늘 누구를 향한 비난을 거두고 이해로 옮겨갔나요?',
+          desc: '나에게도 맹점이 있음을 인정할 때 마음이 조금 가벼워집니다. 그 순간이 닝스마일입니다.'
+        },
+        {
+          title: '오늘 내 안의 어떤 거짓된 생각을 바로잡았나요?',
+          desc: '자기기만을 멈추거나 거짓말하지 않기로 선택하는 것, 그리고 그 뒤의 잔잔한 미소가 닝스마일입니다.'
+        },
+        {
+          title: '오늘 어려운 사람을 어떤 친절로 대할 수 있을까요?',
+          desc: '닝스마일은 무조건 참는 것이 아니라, 양심을 지키며 평화와 선의로 사람을 대하는 것입니다.'
+        }
+      ]
+    };
+
+    const defaultAvatar = document.getElementById('avatarPreview').src;
+    const state = {
+      lang: 'zh',
+      promptIndex: 0,
+      profile: {
+        systemName: '',
+        customName: '',
+        avatar: defaultAvatar
+      },
+      draftPhoto: '',
+      posts: []
+    };
+
+    const STORAGE_KEY = 'ningxiao-pwa-v1';
+    const entryInput = document.getElementById('entry');
+    const count = document.getElementById('count');
+    const avatarPreview = document.getElementById('avatarPreview');
+    const avatarInput = document.getElementById('avatarInput');
+    const customName = document.getElementById('customName');
+    const systemName = document.getElementById('systemName');
+    const photoInput = document.getElementById('photoInput');
+    const photoPreview = document.getElementById('photoPreview');
+    const feedList = document.getElementById('feedList');
+
+    function generateSystemName() {
+      const seed = Date.now().toString(36).slice(-4) + Math.random().toString(36).slice(2, 6);
+      return 'NS-' + seed.toUpperCase();
+    }
+
+    function loadState() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        Object.assign(state, parsed);
+      }
+      if (!state.profile.systemName) {
+        state.profile.systemName = generateSystemName();
+      }
+      if (!state.profile.avatar) {
+        state.profile.avatar = defaultAvatar;
+      }
+      if (!Array.isArray(state.posts)) {
+        state.posts = [];
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function applyLanguage(lang) {
+      state.lang = lang;
+      const t = uiText[lang];
+      document.documentElement.lang = lang;
+      document.getElementById('heroTitle').textContent = t.heroTitle;
+      document.getElementById('heroSubtitle').textContent = t.heroSubtitle;
+      document.getElementById('heroNote').textContent = t.heroNote;
+      document.getElementById('profileTitle').textContent = t.profileTitle;
+      document.getElementById('systemNameLabel').textContent = t.systemNameLabel;
+      document.getElementById('customNameLabel').textContent = t.customNameLabel;
+      document.getElementById('nameHelp').textContent = t.nameHelp;
+      document.getElementById('avatarBtn').textContent = t.avatarBtn;
+      document.getElementById('promptTitle').textContent = t.promptTitle;
+      document.getElementById('newPromptBtn').textContent = t.newPromptBtn;
+      document.getElementById('submissionTitle').textContent = t.submissionTitle;
+      document.getElementById('messageLabel').textContent = t.messageLabel;
+      document.getElementById('photoLabel').textContent = t.photoLabel;
+      document.getElementById('photoBtn').textContent = t.photoBtn;
+      document.getElementById('smileToggle').textContent = t.smileToggle;
+      document.getElementById('saveBtn').textContent = t.saveBtn;
+      document.getElementById('feedTitle').textContent = t.feedTitle;
+      document.getElementById('clearDemoBtn').textContent = t.clearDemoBtn;
+      customName.placeholder = t.customPlaceholder;
+      entryInput.placeholder = t.messagePlaceholder;
+
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+
+      renderPrompt();
+      renderPosts();
+      saveState();
+    }
+
+    function randomizePrompt() {
+      const list = prompts[state.lang];
+      const next = Math.floor(Math.random() * list.length);
+      state.promptIndex = next;
+      renderPrompt();
+      saveState();
+    }
+
+    function renderPrompt() {
+      const t = uiText[state.lang];
+      const list = prompts[state.lang];
+      if (state.promptIndex >= list.length) state.promptIndex = 0;
+      const item = list[state.promptIndex];
+      document.getElementById('promptMain').textContent = item.title;
+      document.getElementById('promptDesc').textContent = t.promptDescPrefix + item.desc;
+    }
+
+    function getDisplayName(post) {
+      return post.customName ? `${post.systemName} + ${post.customName}` : post.systemName;
+    }
+
+    function timeLabel() {
+      return uiText[state.lang].timeJustNow;
+    }
+
+    function renderPosts() {
+      feedList.innerHTML = '';
+      if (state.posts.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'muted-empty';
+        empty.textContent = uiText[state.lang].emptyFeed;
+        feedList.appendChild(empty);
+        return;
+      }
+
+      state.posts.forEach(post => {
+        const card = document.createElement('div');
+        card.className = 'voice-card';
+
+        const head = document.createElement('div');
+        head.className = 'voice-head';
+
+        const avatar = document.createElement('img');
+        avatar.className = 'voice-avatar';
+        avatar.src = post.avatar || defaultAvatar;
+        avatar.alt = 'avatar';
+
+        const info = document.createElement('div');
+        const name = document.createElement('div');
+        name.className = 'voice-name';
+        name.textContent = getDisplayName(post);
+        const time = document.createElement('div');
+        time.className = 'voice-time';
+        time.textContent = post.createdAtText || timeLabel();
+        info.appendChild(name);
+        info.appendChild(time);
+
+        head.appendChild(avatar);
+        head.appendChild(info);
+        card.appendChild(head);
+
+        const prompt = document.createElement('div');
+        prompt.className = 'voice-prompt';
+        prompt.textContent = post.promptTitle;
+        card.appendChild(prompt);
+
+        const text = document.createElement('div');
+        text.className = 'voice-text';
+        text.textContent = post.message;
+        card.appendChild(text);
+
+        if (post.photo) {
+          const photo = document.createElement('img');
+          photo.className = 'voice-photo';
+          photo.src = post.photo;
+          photo.alt = 'smile photo';
+          card.appendChild(photo);
+        }
+
+        feedList.appendChild(card);
+      });
+    }
+
+    function updateCount() {
+      count.textContent = entryInput.value.length;
+    }
+
+    function readImage(file, callback) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => callback(reader.result);
+      reader.readAsDataURL(file);
+    }
+
+    function setDraftPhoto(dataUrl) {
+      state.draftPhoto = dataUrl || '';
+      if (state.draftPhoto) {
+        photoPreview.src = state.draftPhoto;
+        photoPreview.style.display = 'block';
+      } else {
+        photoPreview.src = '';
+        photoPreview.style.display = 'none';
+      }
+    }
+
+    function submitPost() {
+      const text = entryInput.value.trim();
+      if (!text) {
+        alert(uiText[state.lang].emptyMessage);
+        return;
+      }
+
+      const promptItem = prompts[state.lang][state.promptIndex];
+      state.posts.unshift({
+        systemName: state.profile.systemName,
+        customName: state.profile.customName,
+        avatar: state.profile.avatar,
+        message: text,
+        photo: state.draftPhoto,
+        promptTitle: promptItem.title,
+        createdAt: Date.now(),
+        createdAtText: timeLabel(),
+        lang: state.lang
+      });
+
+      entryInput.value = '';
+      updateCount();
+      setDraftPhoto('');
+      renderPosts();
+      saveState();
+    }
+
+    function clearDemo() {
+      state.posts = [];
+      renderPosts();
+      saveState();
+    }
+
+    function seedDemoPosts() {
+      if (state.posts.length > 0) return;
+      state.posts = [
+        {
+          systemName: 'NS-A1F9',
+          customName: '平静海风',
+          avatar: defaultAvatar,
+          message: '今天我意识到自己把疲惫变成了对家人的不耐烦，承认之后，心里反而安静了。',
+          photo: '',
+          promptTitle: '今天，你在哪一种情绪里看见了自己？',
+          createdAt: Date.now(),
+          createdAtText: '刚刚',
+          lang: 'zh'
+        },
+        {
+          systemName: 'NS-C7K2',
+          customName: 'Quiet Smiler',
+          avatar: defaultAvatar,
+          message: 'I stopped defending myself for a moment and chose to listen first.',
+          photo: '',
+          promptTitle: 'Whom did you stop blaming and begin to understand today?',
+          createdAt: Date.now(),
+          createdAtText: 'just now',
+          lang: 'en'
+        }
+      ];
+    }
+
+    function registerServiceWorker() {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js').catch(() => {
+          console.warn(uiText[state.lang].installFail);
+        });
+      }
+    }
+
+    loadState();
+    seedDemoPosts();
+
+    systemName.value = state.profile.systemName;
+    customName.value = state.profile.customName || '';
+    avatarPreview.src = state.profile.avatar || defaultAvatar;
+    setDraftPhoto(state.draftPhoto || '');
+
+    applyLanguage(state.lang || 'zh');
+    updateCount();
+
+    document.getElementById('languageTabs').addEventListener('click', (event) => {
+      const btn = event.target.closest('.lang-btn');
+      if (!btn) return;
+      applyLanguage(btn.dataset.lang);
+    });
+
+    document.getElementById('newPromptBtn').addEventListener('click', randomizePrompt);
+    document.getElementById('randomPromptBtn').addEventListener('click', randomizePrompt);
+    document.getElementById('scrollFeedBtn').addEventListener('click', () => {
+      document.getElementById('feedSection').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('avatarBtn').addEventListener('click', () => avatarInput.click());
+    avatarInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      readImage(file, (dataUrl) => {
+        state.profile.avatar = dataUrl;
+        avatarPreview.src = dataUrl;
+        saveState();
+      });
+    });
+
+    customName.addEventListener('input', () => {
+      state.profile.customName = customName.value.trim();
+      saveState();
+    });
+
+    document.getElementById('photoBtn').addEventListener('click', () => photoInput.click());
+    photoInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      readImage(file, setDraftPhoto);
+    });
+
+    entryInput.addEventListener('input', updateCount);
+    document.getElementById('saveBtn').addEventListener('click', submitPost);
+    document.getElementById('clearDemoBtn').addEventListener('click', clearDemo);
+
+    registerServiceWorker();
+    renderPosts();
+  </script>
+</body>
+</html>
