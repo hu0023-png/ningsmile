@@ -72,8 +72,12 @@
     .hero h1 {
       margin: 0;
       font-size: clamp(42px, 8vw, 64px);
-      font-weight: 400;
-      letter-spacing: 0.12em;
+      font-weight: 800;
+      font-style: italic;
+      letter-spacing: 0.06em;
+      color: #d68a2f;
+      font-family: "Georgia", "Times New Roman", serif;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.6);
     }
 
     .hero .cn {
@@ -143,6 +147,50 @@
       border-radius: 18px;
       padding: 18px;
       margin-bottom: 18px;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .page-info {
+      color: #7a7065;
+      font-size: 14px;
+    }
+
+    .footer-card {
+      background: #fffdfa;
+      border: 1px solid #eee7dc;
+      border-radius: 18px;
+      padding: 18px;
+      margin-top: 18px;
+    }
+
+    .footer-title {
+      font-size: 18px;
+      color: #6d6255;
+      margin-bottom: 8px;
+    }
+
+    .footer-text {
+      color: #645b50;
+      font-size: 15px;
+      line-height: 1.9;
+    }
+
+    .footer-link {
+      color: #b77722;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer-link:hover {
+      text-decoration: underline;
     }
 
     .section-title {
@@ -465,6 +513,19 @@
         <button class="secondary-btn" type="button" id="clearDemoBtn">清除示例</button>
       </div>
       <div id="feedList" class="feed-list"></div>
+      <div class="pagination">
+        <button class="secondary-btn" type="button" id="prevPageBtn">上一页</button>
+        <div class="page-info" id="pageInfo">第 1 页</div>
+        <button class="secondary-btn" type="button" id="nextPageBtn">下一页</button>
+      </div>
+    </section>
+
+    <section class="footer-card">
+      <div class="footer-title" id="footerTitle">出品人：HuSir</div>
+      <div class="footer-text" id="footerText">
+        反省与悔改，不只是为过去自责，而是在真实中看见自己，在恩典中重新开始。
+        <a class="footer-link" id="footerLink" href="https://www.husir.org/" target="_blank" rel="noopener noreferrer">进入 HuSir.org 继续阅读</a>
+      </div>
     </section>
   </main>
 
@@ -492,6 +553,12 @@
         saveBtn: '留下宁笑',
         feedTitle: '宁笑群体',
         clearDemoBtn: '清除示例',
+        prevPageBtn: '上一页',
+        nextPageBtn: '下一页',
+        pageInfo: '第 {page} 页 / 共 {total} 页',
+        footerTitle: '出品人：HuSir',
+        footerText: '反省与悔改，不只是为过去自责，而是在真实中看见自己，在恩典中重新开始。',
+        footerLink: '进入 HuSir.org 继续阅读',
         emptyMessage: '请先写下今天的真实留言。',
         installFail: '离线安装相关文件尚未完整准备好，但网页内容可以正常使用。',
         emptyFeed: '这里会慢慢聚集愿意自省、悔改、并用微笑面对他人的人。',
@@ -519,6 +586,12 @@
         saveBtn: 'Post NingSmile',
         feedTitle: 'NingSmile Community',
         clearDemoBtn: 'Clear Demo',
+        prevPageBtn: 'Previous',
+        nextPageBtn: 'Next',
+        pageInfo: 'Page {page} of {total}',
+        footerTitle: 'Created by HuSir',
+        footerText: 'Reflection and repentance are not merely self-blame for the past, but a way of seeing yourself truthfully and beginning again in grace.',
+        footerLink: 'Visit HuSir.org to read more',
         emptyMessage: 'Please write your honest message first.',
         installFail: 'PWA offline files are not fully ready yet, but the page itself works normally.',
         emptyFeed: 'People willing to reflect, repent, and smile at others will slowly gather here.',
@@ -546,6 +619,12 @@
         saveBtn: '寧笑を残す',
         feedTitle: '寧笑のつながり',
         clearDemoBtn: 'サンプル削除',
+        prevPageBtn: '前へ',
+        nextPageBtn: '次へ',
+        pageInfo: '{total}ページ中 {page}ページ',
+        footerTitle: '制作者：HuSir',
+        footerText: '省みと悔い改めは、過去を責め続けることではなく、真実の中で自分を見つめ、恵みの中で新しく歩み直すことです。',
+        footerLink: 'HuSir.org で続きを読む',
         emptyMessage: 'まず今日の正直な言葉を書いてください。',
         installFail: 'PWAのオフライン用ファイルはまだ完全ではありませんが、ページは通常どおり使えます。',
         emptyFeed: '自省し、悔い改め、微笑みで人に向き合おうとする人がここに集まっていきます。',
@@ -573,6 +652,12 @@
         saveBtn: '닝스마일 남기기',
         feedTitle: '닝스마일 공동체',
         clearDemoBtn: '예시 지우기',
+        prevPageBtn: '이전',
+        nextPageBtn: '다음',
+        pageInfo: '{total}페이지 중 {page}페이지',
+        footerTitle: '제작자: HuSir',
+        footerText: '성찰과 회개는 과거를 탓하는 데 머무르지 않고, 진실하게 자신을 보고 은혜 안에서 다시 시작하는 일입니다.',
+        footerLink: 'HuSir.org에서 더 보기',
         emptyMessage: '먼저 오늘의 진실한 메시지를 적어주세요.',
         installFail: 'PWA 오프라인 파일은 아직 완전히 준비되지 않았지만, 페이지 자체는 정상적으로 사용할 수 있습니다.',
         emptyFeed: '성찰하고 회개하며 미소로 사람을 대하려는 이들이 이곳에 천천히 모일 것입니다.',
@@ -659,6 +744,8 @@
     const state = {
       lang: 'zh',
       promptIndex: 0,
+      currentPage: 1,
+      postsPerPage: 50,
       profile: {
         systemName: '',
         customName: '',
@@ -727,6 +814,11 @@
       document.getElementById('saveBtn').textContent = t.saveBtn;
       document.getElementById('feedTitle').textContent = t.feedTitle;
       document.getElementById('clearDemoBtn').textContent = t.clearDemoBtn;
+      document.getElementById('prevPageBtn').textContent = t.prevPageBtn;
+      document.getElementById('nextPageBtn').textContent = t.nextPageBtn;
+      document.getElementById('footerTitle').textContent = t.footerTitle;
+      document.getElementById('footerText').childNodes[0].textContent = t.footerText + ' ';
+      document.getElementById('footerLink').textContent = t.footerLink;
       customName.placeholder = t.customPlaceholder;
       entryInput.placeholder = t.messagePlaceholder;
 
@@ -771,10 +863,15 @@
         empty.className = 'muted-empty';
         empty.textContent = uiText[state.lang].emptyFeed;
         feedList.appendChild(empty);
+        updatePagination();
         return;
       }
 
-      state.posts.forEach(post => {
+      const start = (state.currentPage - 1) * state.postsPerPage;
+      const end = start + state.postsPerPage;
+      const visiblePosts = state.posts.slice(start, end);
+
+      visiblePosts.forEach(post => {
         const card = document.createElement('div');
         card.className = 'voice-card';
 
@@ -820,6 +917,19 @@
 
         feedList.appendChild(card);
       });
+
+      updatePagination();
+    }
+
+    function updatePagination() {
+      const totalPages = Math.max(1, Math.ceil(state.posts.length / state.postsPerPage));
+      if (state.currentPage > totalPages) state.currentPage = totalPages;
+      const text = uiText[state.lang].pageInfo
+        .replace('{page}', state.currentPage)
+        .replace('{total}', totalPages);
+      document.getElementById('pageInfo').textContent = text;
+      document.getElementById('prevPageBtn').disabled = state.currentPage <= 1;
+      document.getElementById('nextPageBtn').disabled = state.currentPage >= totalPages;
     }
 
     function updateCount() {
@@ -864,6 +974,7 @@
         lang: state.lang
       });
 
+      state.currentPage = 1;
       entryInput.value = '';
       updateCount();
       setDraftPhoto('');
@@ -959,6 +1070,21 @@
 
     entryInput.addEventListener('input', updateCount);
     document.getElementById('saveBtn').addEventListener('click', submitPost);
+    document.getElementById('prevPageBtn').addEventListener('click', () => {
+      if (state.currentPage > 1) {
+        state.currentPage -= 1;
+        renderPosts();
+        saveState();
+      }
+    });
+    document.getElementById('nextPageBtn').addEventListener('click', () => {
+      const totalPages = Math.max(1, Math.ceil(state.posts.length / state.postsPerPage));
+      if (state.currentPage < totalPages) {
+        state.currentPage += 1;
+        renderPosts();
+        saveState();
+      }
+    });
     document.getElementById('clearDemoBtn').addEventListener('click', clearDemo);
 
     registerServiceWorker();
